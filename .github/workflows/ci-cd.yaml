@@ -119,6 +119,14 @@ jobs:
           sed -i "s|DOCKER_HUB_USERNAME/hello-app.*|${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }}|g" k8s/deployment-${{ steps.vars.outputs.K8S_ENV }}.yaml
  #         sed -i "s|DOCKER_HUB_USERNAME/hello-app:${{ steps.vars.outputs.TAG }}|${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }}|g" k8s/deployment.yaml
  #         sed -i "s|DOCKER_HUB_USERNAME/hello-app:${{ steps.vars.outputs.TAG }}|${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }}|g" k8s/deployment-${{ steps.vars.outputs.K8S_ENV }}.yaml
+
+# ------------------------------------------------------------
+      # Étape 9 : Déployer dans Kubernetes
+      # kubectl apply met à jour ou crée les ressources
+      # ------------------------------------------------------------
+      - name: Apply Kubernetes manifests
+        run: |
+          kubectl apply -f k8s/deployment-${{ steps.vars.outputs.K8S_ENV }}.yaml -n ${{ steps.vars.outputs.K8S_ENV }}
       
       # ------------------------------------------------------------
       # Étape 8 : Force rollout annotation
@@ -127,14 +135,7 @@ jobs:
       - name: Force rollout annotation
         run: |
           kubectl annotate deployment hello-app kubernetes.io/change-cause="$(date)" --overwrite -n ${{ steps.vars.outputs.K8S_ENV }}
-      # ------------------------------------------------------------
-      # Étape 9 : Déployer dans Kubernetes
-      # kubectl apply met à jour ou crée les ressources
-      # ------------------------------------------------------------
-      - name: Apply Kubernetes manifests
-        run: |
-          kubectl apply -f k8s/deployment-${{ steps.vars.outputs.K8S_ENV }}.yaml -n ${{ steps.vars.outputs.K8S_ENV }}
-      # ------------------------------------------------------------
+            # ------------------------------------------------------------
       # Étape 10 : Vérifier le rollout
       # Attend que le déploiement soit terminé et confirme que tout fonctionne
       # ------------------------------------------------------------ 
