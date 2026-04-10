@@ -56,7 +56,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-          #test
+          
 
       # ------------------------------------------------------------
       # Étape 4 : Déterminer le tag Docker et l'environnement k8s
@@ -116,7 +116,7 @@ jobs:
       # ------------------------------------------------------------
       - name: Update image in manifest
         run: |
-          sed -i "s|image:.*hello-app.*|image: ${IMAGE_NAME}:${{ steps.vars.outputs.TAG }}|g" k8s/deployment.yaml
+          sed -i "s|DOCKER_HUB_USERNAME/hello-app.*|${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }}|g" k8s/deployment-${{ steps.vars.outputs.K8S_ENV }}.yaml
  #         sed -i "s|DOCKER_HUB_USERNAME/hello-app:${{ steps.vars.outputs.TAG }}|${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }}|g" k8s/deployment.yaml
  #         sed -i "s|DOCKER_HUB_USERNAME/hello-app:${{ steps.vars.outputs.TAG }}|${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }}|g" k8s/deployment-${{ steps.vars.outputs.K8S_ENV }}.yaml
       
