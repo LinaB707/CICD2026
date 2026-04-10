@@ -106,7 +106,7 @@ jobs:
       #    chmod 600 kubeconfig
       #    export KUBECONFIG=$PWD/kubeconfig
       #    echo "KUBECONFIG=$PWD/kubeconfig" >> $GITHUB_ENV
-
+  
       # ------------------------------------------------------------
       # Étape 7 : Mettre à jour le manifest Kubernetes
       # Remplace DOCKER_HUB_USERNAME/hello-app:TAG
